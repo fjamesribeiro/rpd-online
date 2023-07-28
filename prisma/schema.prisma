@@ -10,9 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Psicologo {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  nome     String
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  name              String
+  data              DateTime
+  psicologoId       Int?     @unique
+  psicologoRelation User?    @relation("Psc", fields: [psicologoId], references: [id])
+  psicologo         User?    @relation("Psc")
 }
