@@ -9,12 +9,27 @@ export class PsicologoController {
 
   @Post()
   create(@Body() createPsicologoDto: CreatePsicologoDto) {
-    return this.psicologoService.create(createPsicologoDto);
+    console.log(createPsicologoDto);
+    return this.psicologoService.create({ ...createPsicologoDto });
   }
 
-  @Get(':email')
-  findByEmail(@Param('email') email: string) {
-    return this.psicologoService.findByEmail(email);
+  @Get()
+  findAll() {
+    return this.psicologoService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.psicologoService.findOne(+id);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updatePsicologoDto: UpdatePsicologoDto) {
+    return this.psicologoService.update(+id, updatePsicologoDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.psicologoService.remove(+id);
+  }
 }

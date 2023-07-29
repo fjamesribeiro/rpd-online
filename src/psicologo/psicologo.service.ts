@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePsicologoDto } from './dto/create-psicologo.dto';
+import { UpdatePsicologoDto } from './dto/update-psicologo.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class PsicologoService {
   constructor(private prisma: PrismaService) { }
 
-  async create(createPsicologoDto: CreatePsicologoDto) {
-    const data = {
-      ...createPsicologoDto,
-      password: await bcrypt.hash(createPsicologoDto.password, 10)
-    }
 
-    const createPsc = await this.prisma.psicologo.create({
-      data
+  create(createPsicologoDto: CreatePsicologoDto) {
+    return this.prisma.psicologo.create({
+      data: {
+        ...createPsicologoDto,
+        user: {
+          create: {
+            ...createPsicologoDto.user,
+          }
+        }
+      }
     })
-    return { ...createPsc, password: undefined };
   }
 
-  async findByEmail(email: string) {
-    return await this.prisma.psicologo.findUnique({ where: { email } })
+  findAll() {
+    return this.prisma.psicologo.findMany({ include: { user: true } })
   }
 
+  findOne(id: number) {
+    return `This action returns a #${id} psicologo`;
+  }
+
+  update(id: number, updatePsicologoDto: UpdatePsicologoDto) {
+    return `This action updates a #${id} psicologo`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} psicologo`;
+  }
 }

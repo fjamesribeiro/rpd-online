@@ -1,24 +1,20 @@
-import {
-    IsEmail,
-    IsString,
-    Matches,
-    MaxLength,
-    MinLength,
-} from 'class-validator';
-import { Psicologo } from '../entities/psicologo.entity';
+import { Prisma } from '@prisma/client'
+import { IsOptional, IsString } from 'class-validator';
 
-export class CreatePsicologoDto extends Psicologo {
-    @IsEmail()
-    email: string;
+export interface iUser {
+    email: string,
+    password: string,
+    nome: string,
+    data: Date
+}
 
+export class CreatePsicologoDto {
+    @IsOptional()
     @IsString()
-    @MinLength(4)
-    @MaxLength(20)
-    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-        message: 'password too weak',
-    })
-    password: string;
+    approach?: string;
 
-    @IsString()
-    nome: string;
+    user: iUser;
+
+    @IsOptional()
+    paciente?: Prisma.PacienteCreateNestedManyWithoutPsicologoInput;
 }

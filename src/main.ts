@@ -7,9 +7,7 @@ async function bootstrap() {
   // Pipes
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      transform: true
     }),
   );
   // Starts listening for shutdown hooks

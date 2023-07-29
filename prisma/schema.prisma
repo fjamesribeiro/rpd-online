@@ -10,9 +10,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String
+  nome      String
+  data      DateTime
+  psicologo Psicologo?
+  paciente  Paciente?
+}
+
 model Psicologo {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  nome     String
+  id       Int        @id @default(autoincrement())
+  userid   Int        @unique
+  approach String?
+  user     User       @relation(fields: [userid], references: [id])
+  paciente Paciente[]
+}
+
+model Paciente {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @unique
+  user        User      @relation(fields: [userId], references: [id])
+  psicologoId Int
+  psicologo   Psicologo @relation(fields: [psicologoId], references: [id])
 }
