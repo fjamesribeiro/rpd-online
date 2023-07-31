@@ -1,23 +1,18 @@
-import { Prisma } from "@prisma/client";
-import { IsEmail, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
+export class CreateUserDto {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
-export class CreateUserDto implements Prisma.UserCreateInput {
-    @IsEmail()
-    email: string;
+  @IsNotEmpty()
+  @IsString()
+  password: string;
 
-    @IsString()
-    password: string;
+  @IsNotEmpty()
+  @IsString()
+  nome: string;
 
-    @IsString()
-    nome: string;
-
-    @IsOptional()
-    data: string | Date;
-
-    @IsOptional()
-    psicologo?: Prisma.PsicologoCreateNestedOneWithoutUserInput;
-
-    @IsOptional()
-    paciente?: Prisma.PacienteCreateNestedOneWithoutUserInput;
+  @IsOptional()
+  data: string | Date;
 }
