@@ -34,4 +34,47 @@ model Paciente {
   user        User      @relation(fields: [userId], references: [id])
   psicologoId Int
   psicologo   Psicologo @relation(fields: [psicologoId], references: [id])
+  rpd         Rpd[]
+}
+
+model Rpd {
+  id            Int             @id @default(autoincrement())
+  situacao      String
+  // fisiologia    String
+  // pensamentos   String
+  // comportamento String
+  humor         RpdHumor[]
+  RpdSentimento RpdSentimento[]
+  Paciente      Paciente?       @relation(fields: [pacienteId], references: [id])
+  pacienteId    Int?
+}
+
+model RpdSentimento {
+  idRpd        Int
+  idSentimento Int
+  rpd          Rpd        @relation(fields: [idRpd], references: [id])
+  sentimento   Sentimento @relation(fields: [idSentimento], references: [id])
+
+  @@id([idRpd, idSentimento])
+}
+
+model Sentimento {
+  id            Int             @id @default(autoincrement())
+  texto         String
+  RpdSentimento RpdSentimento[]
+}
+
+model RpdHumor {
+  idRpd   Int
+  idHumor Int
+  rpd     Rpd   @relation(fields: [idRpd], references: [id])
+  humor   Humor @relation(fields: [idHumor], references: [id])
+
+  @@id([idHumor, idRpd])
+}
+
+model Humor {
+  id       Int        @id @default(autoincrement())
+  texto    String
+  RpdHumor RpdHumor[]
 }
