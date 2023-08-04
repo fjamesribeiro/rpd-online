@@ -38,15 +38,15 @@ model Paciente {
 }
 
 model Rpd {
-  id            Int             @id @default(autoincrement())
-  situacao      String
+  id         Int             @id @default(autoincrement())
+  situacao   String
   // fisiologia    String
   // pensamentos   String
   // comportamento String
-  humor         RpdHumor[]
-  RpdSentimento RpdSentimento[]
-  Paciente      Paciente?       @relation(fields: [pacienteId], references: [id])
-  pacienteId    Int?
+  humor      RpdHumor[]
+  sentimento RpdSentimento[]
+  Paciente   Paciente?       @relation(fields: [pacienteId], references: [id])
+  pacienteId Int?
 }
 
 model RpdSentimento {
@@ -60,7 +60,7 @@ model RpdSentimento {
 
 model Sentimento {
   id            Int             @id @default(autoincrement())
-  texto         String
+  texto         String          @unique
   RpdSentimento RpdSentimento[]
 }
 
@@ -75,6 +75,6 @@ model RpdHumor {
 
 model Humor {
   id       Int        @id @default(autoincrement())
-  texto    String
+  texto    String     @unique
   RpdHumor RpdHumor[]
 }
