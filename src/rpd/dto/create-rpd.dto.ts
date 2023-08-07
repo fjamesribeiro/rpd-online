@@ -1,33 +1,48 @@
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, } from "class-validator";
+import { Prisma } from '@prisma/client';
+import {
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
-export class CreateRpdDto {
-    @IsString()
-    @IsNotEmpty()
-    situacao: string;
+export class CreateRpdDto implements Prisma.RpdCreateInput {
+  data: string | Date;
+  situacao: string;
+  comportamento: string;
+  pensamento?: Prisma.PensamentoCreateNestedManyWithoutRpdInput;
+  paciente: Prisma.PacienteCreateNestedOneWithoutRpdInput;
+  humor: Prisma.HumorCreateNestedOneWithoutRpdInput;
+  sentimento?: Prisma.RpdSentimentoCreateNestedManyWithoutRpdInput;
+  fisiologia?: Prisma.RpdFisiologiaCreateNestedManyWithoutRpdInput;
 
-    @IsDate()
-    // @IsNotEmpty()
-    @IsOptional()
+  //   @IsString()
+  //   @IsNotEmpty()
+  //   situacao: string;
 
-    data?: Date
+  //   @IsDate()
+  //   // @IsNotEmpty()
+  //   @IsOptional()
+  //   data?: Date;
 
-    @IsString()
-    @IsNotEmpty()
-    comportamento: string;
+  //   @IsString()
+  //   @IsNotEmpty()
+  //   comportamento: string;
 
-    @IsOptional()
-    pensamento?: String[]
+  //   @IsOptional()
+  //   humor: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    pacienteId: number;
+  //   @IsNotEmpty()
+  //   @IsNumber()
+  //   pacienteId: number;
 
-    @IsOptional()
-    humor?: number[];
+  //   @IsOptional()
+  //   pensamento?: String[];
 
-    @IsOptional()
-    sentimento?: number[];
+  //   @IsOptional()
+  //   sentimento?: number[];
 
-    @IsOptional()
-    fisiologia?: number[];
+  //   @IsOptional()
+  //   fisiologia?: number[];
 }
