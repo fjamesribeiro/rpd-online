@@ -22,11 +22,9 @@ export class RpdService {
     const dataCreate: Prisma.RpdCreateInput = {
       comportamento, situacao, data: new Date,
       paciente: { connect: { id: pacienteId } },
+      humor: { connect: { id: 1 } },
       fisiologia: {
         createMany: { data: [{ idFisiologia: 1 }, { idFisiologia: 2 }] }
-      },
-      humor: {
-        connect: { id: 1 }
       },
       sentimento: {
         createMany: { data: [{ idSentimento: 20 }, { idSentimento: 30 }, { idSentimento: 35 }] }
@@ -45,7 +43,7 @@ export class RpdService {
   }
 
   findOne(id: number) {
-    return this.prisma.rpd.findUnique({ where: { id }, include: { fisiologia: true, humor: true, pensamento: true, sentimento: true, paciente: { include: { user: true } } } });
+    return this.prisma.rpd.findUnique({ where: { id }, include: { paciente: { select: { user: { select: { nome: true } } } }, humor: { select: { texto: true } }, fisiologia: { select: { fsiologia: { select: { texto: true } } } }, pensamento: true, sentimento: { select: { sentimento: { select: { texto: true } } } } } })
   }
 
   update(id: number, updateRpdDto: UpdateRpdDto) {
@@ -53,6 +51,6 @@ export class RpdService {
   }
 
   remove(id: number) {
-    return this.prisma.rpd.delete({ where: { id } })
+    return this.prisma.rpd.delete({ where: { id }, include: { fisiologia: true } })
   }
 }
