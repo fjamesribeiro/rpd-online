@@ -24,57 +24,83 @@ model Psicologo {
   id       Int        @id @default(autoincrement())
   userid   Int        @unique
   approach String?
-  user     User       @relation(fields: [userid], references: [id])
+  user     User       @relation(fields: [userid], references: [id], onDelete: Cascade)
   paciente Paciente[]
 }
 
 model Paciente {
   id          Int       @id @default(autoincrement())
   userId      Int       @unique
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   psicologoId Int
-  psicologo   Psicologo @relation(fields: [psicologoId], references: [id])
+  psicologo   Psicologo @relation(fields: [psicologoId], references: [id], onDelete: Cascade)
   rpd         Rpd[]
 }
 
 model Rpd {
-  id         Int             @id @default(autoincrement())
-  situacao   String
-  // fisiologia    String
-  // pensamentos   String
-  // comportamento String
-  humor      RpdHumor[]
-  sentimento RpdSentimento[]
-  Paciente   Paciente?       @relation(fields: [pacienteId], references: [id])
-  pacienteId Int?
+  id            Int             @id @default(autoincrement())
+  data          DateTime
+  situacao      String
+  comportamento String
+  pacienteId    Int
+  pensamento    Pensamento[]
+  paciente      Paciente        @relation(fields: [pacienteId], references: [id], onDelete: Cascade)
+  humor         Humor           @relation(fields: [humorId], references: [id], onDelete: Cascade)
+  humorId       Int
+  sentimento    RpdSentimento[]
+  fisiologia    RpdFisiologia[]
+}
+
+model Pensamento {
+  id    Int    @id @default(autoincrement())
+  idRpd Int
+  texto String
+  Rpd   Rpd    @relation(fields: [idRpd], references: [id], onDelete: Cascade)
 }
 
 model RpdSentimento {
   idRpd        Int
   idSentimento Int
-  rpd          Rpd        @relation(fields: [idRpd], references: [id])
-  sentimento   Sentimento @relation(fields: [idSentimento], references: [id])
+  rpd          Rpd        @relation(fields: [idRpd], references: [id], onDelete: Cascade)
+  sentimento   Sentimento @relation(fields: [idSentimento], references: [id], onDelete: Cascade)
 
   @@id([idRpd, idSentimento])
 }
 
 model Sentimento {
-  id            Int             @id @default(autoincrement())
-  texto         String          @unique
-  RpdSentimento RpdSentimento[]
-}
-
-model RpdHumor {
-  idRpd   Int
-  idHumor Int
-  rpd     Rpd   @relation(fields: [idRpd], references: [id])
-  humor   Humor @relation(fields: [idHumor], references: [id])
-
-  @@id([idHumor, idRpd])
+  id              Int               @id @default(autoincrement())
+  texto           String            @unique
+  rpdSentimento   RpdSentimento[]
+  humorSentimento HumorSentimento[]
 }
 
 model Humor {
-  id       Int        @id @default(autoincrement())
-  texto    String     @unique
-  RpdHumor RpdHumor[]
+  id              Int               @id @default(autoincrement())
+  texto           String            @unique
+  humorSentimento HumorSentimento[]
+  Rpd             Rpd[]
+}
+
+model HumorSentimento {
+  idHumor      Int
+  idSentimento Int
+  humor        Humor      @relation(fields: [idHumor], references: [id], onDelete: Cascade)
+  sentimento   Sentimento @relation(fields: [idSentimento], references: [id], onDelete: Cascade)
+
+  @@id([idHumor, idSentimento])
+}
+
+model RpdFisiologia {
+  idRpd        Int
+  idFisiologia Int
+  rpd          Rpd        @relation(fields: [idRpd], references: [id], onDelete: Cascade)
+  fsiologia    Fisiologia @relation(fields: [idFisiologia], references: [id], onDelete: Cascade)
+
+  @@id([idFisiologia, idRpd])
+}
+
+model Fisiologia {
+  id            Int             @id @default(autoincrement())
+  texto         String          @unique
+  rpdFisiologia RpdFisiologia[]
 }

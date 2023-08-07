@@ -6,7 +6,7 @@ import { UpdatePacienteDto } from './dto/update-paciente.dto';
 
 @Injectable()
 export class PacienteService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createPacienteDto: CreatePacienteDto) {
     const { email, nome, password, psicologoId } = createPacienteDto;
@@ -14,8 +14,6 @@ export class PacienteService {
     const psicologo = await this.prisma.psicologo.findUnique({
       where: { id: psicologoId },
     });
-
-    console.log(psicologo);
 
     if (!psicologo) {
       throw new Error(`Psicologo de id ${psicologoId} não cadastrado`);
@@ -35,13 +33,11 @@ export class PacienteService {
       },
     };
 
-    console.log(data);
-
     return this.prisma.paciente.create({ data });
   }
 
   findAll() {
-    return this.prisma.paciente.findMany();
+    return this.prisma.paciente.findMany({ include: { user: true } });
   }
 
   findOne(id: number) {
