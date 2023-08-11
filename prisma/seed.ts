@@ -136,11 +136,11 @@ const humorsentimentos345 = [
 ];
 
 async function main() {
-  await prisma.humor.createMany({ data: humores });
+  // await prisma.humor.createMany({ data: humores });
   // await prisma.fisiologia.createMany({ data: fisiologia });
   // await prisma.sentimento.createMany({ data: sentimentos });
-  await prisma.humorSentimento.createMany({ data: humorsentimentos12 });
-  await prisma.humorSentimento.createMany({ data: humorsentimentos345 });
+  // await prisma.humorSentimento.createMany({ data: humorsentimentos12 });
+  // await prisma.humorSentimento.createMany({ data: humorsentimentos345 });
 }
 
 main()

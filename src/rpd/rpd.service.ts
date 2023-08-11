@@ -8,60 +8,6 @@ export class RpdService {
   constructor(private prisma: PrismaService) {}
 
   async create(createRpdDto: CreateRpdDto) {
-    const { comportamento, data, situacao, pacienteId, humor } = createRpdDto;
-
-    const paciente = await this.prisma.paciente.findUnique({
-      where: { id: pacienteId },
-    });
-
-    if (!paciente) {
-      throw new NotFoundException(
-        `Paciente de id ${pacienteId} não encontrado`,
-      );
-    }
-
-    let json = {
-      comportamento,
-      situacao,
-      data: new Date(),
-      paciente: { connect: { id: pacienteId } },
-      humor: { connect: { id: humor } },
-    };
-
-    if (createRpdDto.fisiologia) {
-      let val = [];
-      createRpdDto.fisiologia.map((id) => {
-        val.push({ idFisiologia: id });
-      });
-      json['fisiologia'] = {
-        createMany: { data: val },
-      };
-    }
-
-    if (createRpdDto.sentimento) {
-      let val = [];
-      createRpdDto.sentimento.map(async (id) => {
-        val.push({ idSentimento: id });
-      });
-
-      json['sentimento'] = {
-        createMany: { data: val },
-      };
-    }
-
-    if (createRpdDto.pensamento) {
-      let val = [];
-      createRpdDto.pensamento.map((texto) => {
-        val.push({ texto: texto });
-      });
-
-      json['pensamento'] = {
-        createMany: {
-          data: val,
-        },
-      };
-    }
-
     return await this.prisma.rpd.create({ data: createRpdDto });
   }
 
