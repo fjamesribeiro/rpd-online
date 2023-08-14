@@ -19,14 +19,14 @@ async function bootstrap() {
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
 
-  await app.listen(3000);
 
   app.use(
     session({
       secret: 'my-secret',
-      resave: true,
-      saveUninitialized: true,
+      resave: false,
+      saveUninitialized: false,
       cookie: {
+        secure: true,
         maxAge: 60000,
       },
     }),
@@ -34,6 +34,7 @@ async function bootstrap() {
 
   app.use(passport.initialize());
   app.use(passport.session());
+  await app.listen(3000);
 }
 
 bootstrap();

@@ -23,6 +23,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<any> {
     const { name, emails, photos } = profile;
     console.log('accessToken  =>  ', accessToken);
+
+    //TODO: modificar a tabela de usuarios para ter esses dados
     const user = await this.auth.validateUser({
       email: emails[0].value,
       fistName: name.givenName,

@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { use } from 'passport';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   create(createUserDto: CreateUserDto) {
     return this.prisma.user.create({
@@ -23,7 +24,8 @@ export class UserService {
 
   async findbyEmail(email: string) {
     console.log(email);
-    return await this.prisma.user.findUnique({ where: { email } });
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
