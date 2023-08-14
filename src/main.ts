@@ -1,9 +1,8 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { HttpErrorFilter } from './core/filters/httpErrorFilter';
+import { NestFactory } from '@nestjs/core';
 import session from 'express-session';
 import passport from 'passport';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,10 +14,9 @@ async function bootstrap() {
     }),
   );
   //filter
-  app.useGlobalFilters(new HttpErrorFilter());
+  // app.useGlobalFilters(new HttpErrorFilter());
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
-
 
   app.use(
     session({

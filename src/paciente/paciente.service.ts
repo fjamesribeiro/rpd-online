@@ -6,10 +6,11 @@ import { UpdatePacienteDto } from './dto/update-paciente.dto';
 
 @Injectable()
 export class PacienteService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createPacienteDto: CreatePacienteDto) {
-    const { email, nome, password, psicologoId } = createPacienteDto;
+    const { email, nome, psicologoId, ativo, sobrenome, urlFoto } =
+      createPacienteDto;
 
     const psicologo = await this.prisma.psicologo.findUnique({
       where: { id: psicologoId },
@@ -26,9 +27,10 @@ export class PacienteService {
       user: {
         create: {
           nome,
+          sobrenome,
+          urlFoto,
+          ativo,
           email,
-          password,
-          data: new Date(),
         },
       },
     };
@@ -44,8 +46,11 @@ export class PacienteService {
     return `This action returns a #${id} paciente`;
   }
 
-  update(id: number, updatePacienteDto: UpdatePacienteDto) {
-    return `This action updates a #${id} paciente`;
+  async update(id: number, updatePacienteDto: UpdatePacienteDto) {
+    return await this.prisma.paciente.update({
+      data: updatePacienteDto,
+      where: { id },
+    });
   }
 
   remove(id: number) {

@@ -22,9 +22,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     done: VerifyCallback,
   ): Promise<any> {
     const { name, emails, photos } = profile;
-    console.log('accessToken  =>  ', accessToken);
+    console.log('accessToken => ', accessToken);
 
-    //TODO: modificar a tabela de usuarios para ter esses dados
     const user = await this.auth.validateUser({
       email: emails[0].value,
       fistName: name.givenName,
@@ -32,6 +31,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       picture: photos[0].value,
       accessToken,
     });
-    done(null, user);
+
+    if (user) {
+      done(null, user);
+    } else {
+      done(null, null);
+      throw new Error('Usuário não cadastrado');
+    }
   }
 }

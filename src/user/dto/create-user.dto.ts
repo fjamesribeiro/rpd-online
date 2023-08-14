@@ -5,13 +5,21 @@ export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   nome: string;
+
+  @IsOptional()
+  @IsString()
+  sobrenome: string;
+
+  @IsOptional()
+  @IsString()
+  urlFoto: string;
+
+  @IsOptional()
+  @IsString()
+  ativo: boolean;
 
   @IsOptional()
   data: string | Date;
