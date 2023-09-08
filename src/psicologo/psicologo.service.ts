@@ -9,15 +9,21 @@ export class PsicologoService {
   constructor(private prisma: PrismaService) {}
 
   create(createPsicologoDto: CreatePsicologoDto) {
-    const { email, nome, password, approach } = createPsicologoDto;
+    const { email, nome, ativo, sobrenome, urlFoto, approach } =
+      createPsicologoDto;
 
     const data: Prisma.PsicologoCreateInput = {
       approach,
       user: {
-        create: { data: new Date(), email, nome, password },
+        create: {
+          nome,
+          sobrenome,
+          urlFoto,
+          ativo,
+          email,
+        },
       },
     };
-
     return this.prisma.psicologo.create({ data });
   }
 
@@ -30,7 +36,10 @@ export class PsicologoService {
   }
 
   update(id: number, updatePsicologoDto: UpdatePsicologoDto) {
-    return `This action updates a #${id} psicologo`;
+    return this.prisma.psicologo.update({
+      data: updatePsicologoDto,
+      where: { id },
+    });
   }
 
   remove(id: number) {

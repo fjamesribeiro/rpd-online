@@ -13,9 +13,11 @@ datasource db {
 model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
-  password  String
-  nome      String
-  data      DateTime
+  nome      String?
+  sobrenome String?
+  data      DateTime?  @default(now())
+  urlFoto   String?
+  ativo     Boolean    @default(true)
   psicologo Psicologo?
   paciente  Paciente?
 }

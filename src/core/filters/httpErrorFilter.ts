@@ -10,9 +10,11 @@ import {
 @Catch()
 export class HttpErrorFilter implements ExceptionFilter {
   private readonly logger: Logger;
+
   constructor() {
     this.logger = new Logger();
   }
+
   catch(exception: Error, host: ArgumentsHost): any {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
@@ -22,6 +24,7 @@ export class HttpErrorFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+
     const message =
       exception instanceof HttpException
         ? exception.message
@@ -40,10 +43,12 @@ export class HttpErrorFilter implements ExceptionFilter {
       statusCode,
       message,
     };
+
     this.logger.log(
       `request method: ${request.method} request url${request.url}`,
       JSON.stringify(devErrorResponse),
     );
+
     response
       .status(statusCode)
       .json(
