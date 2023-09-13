@@ -6,7 +6,7 @@ import { UpdatePacienteDto } from './dto/update-paciente.dto';
 
 @Injectable()
 export class PacienteService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createPacienteDto: CreatePacienteDto) {
     const { email, nome, psicologoId, ativo, sobrenome, urlFoto } =
@@ -44,6 +44,10 @@ export class PacienteService {
 
   findOne(id: number) {
     return `This action returns a #${id} paciente`;
+  }
+
+  findbyPsicologo(id: number) {
+    return this.prisma.paciente.findMany({ where: { psicologoId: id } })
   }
 
   async update(id: number, updatePacienteDto: UpdatePacienteDto) {

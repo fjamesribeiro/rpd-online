@@ -13,7 +13,7 @@ import { UpdatePacienteDto } from './dto/update-paciente.dto';
 
 @Controller('paciente')
 export class PacienteController {
-  constructor(private readonly pacienteService: PacienteService) {}
+  constructor(private readonly pacienteService: PacienteService) { }
 
   @Post()
   create(@Body() createPacienteDto: CreatePacienteDto) {
@@ -30,6 +30,12 @@ export class PacienteController {
   findOne(@Param('id') id: string) {
     return this.pacienteService.findOne(+id);
   }
+
+  @Get('/psc/:id')
+  find(@Param('id') id: string) {
+    return this.pacienteService.findbyPsicologo(+id);
+  }
+
 
   @Patch(':id')
   update(
